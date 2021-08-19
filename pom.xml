@@ -11,17 +11,21 @@
 
     <modules>
         <module>spring-boot</module>
+        <module>eureka-server</module>
     </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.boot.version>2.0.2.RELEASE</spring.boot.version>
+        <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
+        <spring.cloud.version>Hoxton.SR6</spring.cloud.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <!-- spring-boot项目依赖 -->
+            <!-- [type=pom,scope=import]表示从指定pom文件中导入dependency依赖到当前项目 -->
+            <!-- 注意:import,type=pom只允许在dependencyManagement元素中进行使用 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -29,20 +33,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- spring-boot整合log4j日志 -->
-            <dependency> <!-- 引入log4j2依赖 -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-log4j2</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <!-- lombok依赖 -->
+            <!-- spring-cloud相关依赖 -->
+            <!-- spring-cloud-dependencies声明了cloud组件的版本 -->
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.0</version>
-                <scope>provided</scope>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-            <!--  -->
         </dependencies>
     </dependencyManagement>
 
