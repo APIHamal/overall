@@ -1,17 +1,59 @@
 spring:
   application:
     name: eureka-server
+---
 server:
   port: 7770
+spring:
+  profiles: common
+####分割不同的环境变量
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #当EurekaClient向服务器注册时注册自身的IP地址而不是主机名
+    prefer-ip-address: true
+    #心跳发发送频率指定续约更新频率(指定间隔的发送时间)
+    ##生产环境中应该使用默认值
+    lease-renewal-interval-in-seconds: 10
+    #表示EurekaServer(Eureka服务器)在接收到上一个心跳之后等待下一个心跳的秒数
+    ##若不能在指定时间内收到心跳则移除此实例并禁止此实例的流量
+    lease-expiration-duration-in-seconds: 15
+  server:
+    #关闭eureka的自我保护模式
+    ##自我保护机制的工作机制是如果在15分钟内超过85%的客户端节点都没有正常的心跳
+    ###那么Eureka就认为客户端与注册中心出现了网络故障自动进入自我保护机制
+    enable-self-preservation: false
+    #服务端检查失效的实例时间间隔
+    ##检测到实例失效后会将实例从当前服务注册表中进行剔除(该值设置较小时可以迅速剔除失效的服务实例)
+    eviction-interval-timer-in-ms: 5000
+  client:
+    #表示此实例是否注册到 EurekaServer以供其他实例发现
+    register-with-eureka: false
+    #表示客户端是否从EurekaServer获取实例注册信息
+    fetch-registry: false
+    service-url:
+      defaultZone: http://127.0.0.1:7770
+    #设置拉取服务注册表信息时间(客户端本地有缓存不必每次都去服务器加载)
+    registry-fetch-interval-seconds: 10
+    #EurekaClient对象模式是可刷新的对象
+    ##发生刷新时客户端将从Eureka服务器中注销并且可能会在短暂的时间内不提供给定服务的所有实例
+    ###因此为了消除这种情况应该禁用刷新Eureka客户端的功能(SpringCloudConfig中可配置Bean的动态刷新功能)
+    refresh:
+      enable: false
+---
+server:
+  port: 7771
+spring:
+  profiles: region-zone-support
 eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    service-url:
-      defaultZone: http://127.0.0.1:7770
   server:
-    # 关闭eureka的自我保护模式
-    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
+  client:
+    region: suzhou
+    availability-zones: zone1,zone2
+    service-url:
+      zone1: http://127.0.0.1:7000
+      zone2: http://127.0.0.1:7001

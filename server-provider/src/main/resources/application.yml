@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: server-provider
+---
+spring:
+  profiles: common
+server:
+  port: 7001
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
