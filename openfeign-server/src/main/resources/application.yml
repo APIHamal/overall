@@ -1,0 +1,42 @@
+server:
+  port: 7773
+spring:
+  application:
+    name: open-feign-server
+---
+spring:
+  profiles: common
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+#开启hystrix组件支持否则feign无法使用Fallback功能
+feign:
+  hystrix:
+    enabled: true #开启feign的hystrix支持(支持feign的回退功能)
+  compression:
+    request:
+      enabled: true #开启feign数据压缩功能
+    response:
+      enabled: true
+  client:
+    config: #配置默认的客户端和自定义客户端的配置信息
+      default:
+        loggerLevel: BASIC #设置feign的日志级别
+        connectTimeout: 1000 #设置feign默认连接超时时间
+        readTimeout: 2000 #设置feign默认的读流超时时间
+      server-provider: #设置自定义feign客户端的配置
+        loggerLevel: FULL #设置feign的日志级别
+        readTimeout: 3000 #设置超时时间
+#设置feign的日志级别(可以精确到feign对象所在的包)
+logging:
+  level:
+    com.lizhengpeng.overall.openfeign: debug
+ribbon:
+  eager-load:
+    enabled: true #开启ribbon的饥饿加载模式

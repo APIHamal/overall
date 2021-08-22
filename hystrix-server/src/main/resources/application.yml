@@ -1,0 +1,26 @@
+server:
+  port: 7772
+spring:
+  application:
+    name: hystrix-server
+---
+spring:
+  profiles: common
+#hystrix相关配置
+#hystrix指标流配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+#eureka客户端的配置
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+    fetch-registry: true
+    register-with-eureka: true

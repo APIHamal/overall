@@ -1,0 +1,39 @@
+server:
+  port: 7774
+spring:
+  application:
+    name: zuul-server
+---
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+#zuul路由转发配置
+zuul:
+  ignored-services: "*" #隐藏服务的自动代理功能(默认情况下zuul代理eureka中发现的所有服务)
+  routes:
+    server-provider-route:
+      serviceId: server-provider #服务在eureka中注册的名称
+      path: /api/**              #代理转发的url
+      stripPrefix: true          #转发时去掉当前URL的前缀字符
+  #prefix: /api #该选项给所有代理的URL添加前缀
+  #strip-prefix: true #该选项仅去除或保留(zuul.prefix)设置的URL前缀对应具体routes.service中设置的[path]不生效
+  ribbon:
+    eager-load:
+      enabled: true #启用ribbon的饥饿加载模式(默认情况下ribbon是懒加载)第一次初始化可能占用较长时间
+#自定义一个ribbon对象并且以便zuul进行负载均衡方式调用
+myusers-service:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: https://example1.com,http://example2.com
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 200
+    MaxConnectionsPerHost: 100

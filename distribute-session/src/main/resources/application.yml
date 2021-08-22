@@ -1,0 +1,28 @@
+server:
+  port: 7775
+spring:
+  application:
+    name: distribute-session-server
+---
+#设置相关mongodb属性
+spring:
+  data:
+    mongodb:
+      host: 192.168.168.168,192.168.168.169,192.168.168.170
+      port: 27017
+      database: app_db
+      username: lizhengpeng
+      password: '123456'
+  profiles: common
+#设置eureka注册中心属性
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+    fetch-registry: true
+    register-with-eureka: true
