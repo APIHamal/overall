@@ -43,12 +43,19 @@ public class DistributeSessionServletRequestWrapper extends HttpServletRequestWr
                     logger.warn("[MongoSession]环境配置异常{请检查Mongodb环境|MongoClient配置}");
                     return httpSession = super.getSession(create);
                 }else{
+                    /**
+                     * 加载Session时根据cookie值去mongo加载一次如果加载失败
+                     * 1)session已经失效被mongo删除
+                     * 2)一个无效的cookie值需要重新生成session
+                     */
                     String sessionId = null;
                     Cookie[] cookies = ((HttpServletRequest)getRequest()).getCookies();
-                    for(Cookie cookie : cookies){
-                        if (cookie.getName().equals(MongoSession.SESSION_NAME)){
-                            sessionId = cookie.getValue();
-                            break;
+                    if(cookies != null){
+                        for(Cookie cookie : cookies){
+                            if (cookie.getName().equals(MongoSession.SESSION_NAME)){
+                                sessionId = cookie.getValue();
+                                break;
+                            }
                         }
                     }
                     MongoSession mongoSession = new MongoSession(mongoService);

@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * MongoDB客户端自动配置对象
+ * @author idealist
  */
 @Configuration
 public class MongoClientAutoConfig {

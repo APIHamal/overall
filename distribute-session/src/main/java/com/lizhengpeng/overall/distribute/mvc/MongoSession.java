@@ -21,6 +21,7 @@ public class MongoSession extends BaseMongoSession {
     public MongoSession(MongoService mongoService){
         this.mongoService = mongoService;
         sessionDocument = new SessionDocument();
+        sessionDocument.setAttribute(attribute);
     }
 
     public boolean loadSession(String sessionId){
