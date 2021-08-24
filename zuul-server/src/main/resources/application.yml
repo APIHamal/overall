@@ -4,6 +4,15 @@ spring:
   application:
     name: zuul-server
 ---
+#配置分布式Session相关的配置
+spring:
+  data:
+    mongodb:
+      host: 192.168.168.168,192.168.168.169,192.168.168.170
+      port: 27017
+      database: app_db
+      username: lizhengpeng
+      password: '123456'
 eureka:
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
@@ -28,6 +37,7 @@ zuul:
   ribbon:
     eager-load:
       enabled: true #启用ribbon的饥饿加载模式(默认情况下ribbon是懒加载)第一次初始化可能占用较长时间
+  sensitive-headers: no #sensitive-headers会是zuul在转发时删除对应的HTTP头部(通常内部系统之间不删除任何信息[no]相当于占位符)
 #自定义一个ribbon对象并且以便zuul进行负载均衡方式调用
 myusers-service:
   ribbon:

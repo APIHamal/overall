@@ -46,6 +46,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
+        <!-- 添加自定义Session组件 -->
+        <dependency>
+            <groupId>com.lizhengpeng.overall</groupId>
+            <artifactId>distribute-session</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

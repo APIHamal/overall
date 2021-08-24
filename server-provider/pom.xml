@@ -35,6 +35,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
+        <!-- 添加分布式session组件 -->
+        <dependency>
+            <groupId>com.lizhengpeng.overall</groupId>
+            <artifactId>distribute-session</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

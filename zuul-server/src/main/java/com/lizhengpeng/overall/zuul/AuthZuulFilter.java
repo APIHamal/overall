@@ -1,5 +1,6 @@
 package com.lizhengpeng.overall.zuul;
 
+import com.lizhengpeng.overall.distribute.mvc.DistributeSessionServletRequestWrapper;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -9,6 +10,7 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 /**
@@ -60,7 +62,16 @@ public class AuthZuulFilter extends ZuulFilter {
          */
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
-        logger.info("请求的URL->"+request.getRequestURI());
+        /**
+         * 获取当前请求对象的Session(本质上是MongoSession对象)
+         */
+        HttpSession httpSession = request.getSession();
+        logger.info("sessionID--->"+httpSession.getId());
+        if(httpSession.getAttribute("name") == null){
+            throw new RuntimeException("无请求操作权限");
+        }else{
+            logger.info("用户通过权限认证....ok");
+        }
         return NO_OPERATION;
     }
 }

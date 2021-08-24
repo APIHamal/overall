@@ -1,5 +1,6 @@
 package com.lizhengpeng.overall.server.provider;
 
+import com.lizhengpeng.overall.distribute.mvc.EnableDistributeSession;
 import com.lizhengpeng.overall.server.provider.model.UserInfo;
 import com.lizhengpeng.overall.server.provider.service.Service;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.InvalidParameterException;
 
 /**
@@ -21,6 +24,7 @@ import java.security.InvalidParameterException;
 @EnableEurekaClient
 @EnableCircuitBreaker
 @RestController
+@EnableDistributeSession
 public class ServerProvider7001 {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerProvider7001.class);
@@ -29,7 +33,12 @@ public class ServerProvider7001 {
     private Service service;
 
     @GetMapping("/plus_text")
-    public String concatText(@RequestParam("text") String text){
+    public String concatText(@RequestParam("text") String text, HttpServletRequest servletRequest){
+        HttpSession httpSession = servletRequest.getSession();
+        logger.info("sessionId--->"+httpSession.getId());
+        if(httpSession.getAttribute("name") != null){
+            logger.info("当前调用方名称--->"+httpSession.getAttribute("name"));
+        }
         return "hi,plus_text:"+text;
     }
 
