@@ -18,6 +18,8 @@
         <module>config-server</module>
         <module>zuul-server</module>
         <module>distribute-session</module>
+        <module>custom-property-server</module>
+        <module>config-client</module>
     </modules>
 
     <properties>

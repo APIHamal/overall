@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: config-client
+server:
+  port: 7777
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+---
+spring:
+  profiles: auto
+#配置Config服务的自动发现
+#注册中心相关的匹配规则
+#1)/application-profile[yml|properties]
+#2)/label/application-profile[yml|properties]
+#3)/application/profile/label/
+####最终配置文件的形式都是application-profile[yml|properties]
+  cloud:
+    config:
+      enabled: true
+      discovery: #配置config服务的自动发现(从注册中心发现config服务并获取配置)
+        enabled: true
+        service-id: config-server #配置注册中心中config服务的服务ID
+      label: master #label相当于git中的分支名称(注意:如果对应的分支在git中不存在则程序会报错处理)
+      profile: prod
+      fail-fast: true #配置快速失败
+      request-connect-timeout: 5000 #配置客户端连接config服务器的超时时间
+      request-read-timeout: 10000 #配置客户端读取配置的超时时间
+#配置直连获取config客户端的配置
+---
+spring:
+  profiles: direct #配置直接连接config服务器(不使用服务发现的方式查找config服务器)
+  cloud:
+    config:
+      fail-fast: true
+      uri: http://127.0.0.1:7776
+      label: dev
+      profile: prod
+      enabled: true
+      discovery: #禁用服务发现的方式查找config服务器
+        enabled: false

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: config-server
+server:
+  port: 7776
+#配置eureka服务器
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 7
+    lease-expiration-duration-in-seconds: 15
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+---
+#使用git的方式管理客户端的配置文件(git方式)
+#注意使用git仓库管理配置文件时(spring.profiles.active必须为git)
+#(spring.profiles.active=git)
+spring:
+  profiles: git #(spring.profiles.active不存在或者为git时使用git管理文件)
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/lizhengpeng_mayun/config-server.git #配置git仓库的地址
+          search-paths: / #配置服务器查找文件的路径
