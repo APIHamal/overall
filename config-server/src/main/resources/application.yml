@@ -27,3 +27,19 @@ spring:
         git:
           uri: https://gitee.com/lizhengpeng_mayun/config-server.git #配置git仓库的地址
           search-paths: / #配置服务器查找文件的路径
+          skip-ssl-validation: false #跳过配置服务器对GIT服务器的SSL证书的验证
+          timeout: 5 #连接git服务器的超时时间(秒为单位)
+          clone-on-start: true #默认情况下config在首次请求时才进行git仓库的克隆(此配置可设置在服务启动时进行克隆)
+          force-pull: true #强制配置服务
+          refresh-rate: 0 #控制配置服务器多久从Git后端获取更新的配置数据(默认为0表示每次获取时均从git拉取数据到本地)
+---
+#使用本地文件系统的方式配置服务器
+#注意:使用本地文件系统方式管理配置必须开启(spring.profiles.active=native)否则默认使用git
+spring:
+  profiles: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config/ #以classPath路径方式给出配置位置
+          #search-locations: file:/C:/Users/idealist/Desktop/配置仓库 #以本地文件路径方式给出配置位置

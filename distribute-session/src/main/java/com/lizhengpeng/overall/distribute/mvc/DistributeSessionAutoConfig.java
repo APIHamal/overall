@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +45,7 @@ public class DistributeSessionAutoConfig {
         registration.setFilter(new DistributeSessionCreateFilter(mongoService));
         registration.setName("DistributeSessionCreateFilter");
         registration.setUrlPatterns(Arrays.asList("/*"));
+        registration.setOrder(-1); /** 优先级越低约先被执行 **/
         return registration;
     }
 

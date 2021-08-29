@@ -34,7 +34,7 @@ spring:
   cloud:
     config:
       fail-fast: true
-      uri: http://127.0.0.1:7776
+      uri: http://127.0.0.1:7776,http://127.0.0.1:7776 #可以配置多个配置服务器的链接(从而创建高可用的配置环境)
       label: dev
       profile: prod
       enabled: true

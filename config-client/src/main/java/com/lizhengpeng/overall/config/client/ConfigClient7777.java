@@ -27,7 +27,7 @@ public class ConfigClient7777 {
 
     @GetMapping("/text")
     public String getText(){
-        return application;
+        return hello;
     }
 
     public static void main(String[] args) {

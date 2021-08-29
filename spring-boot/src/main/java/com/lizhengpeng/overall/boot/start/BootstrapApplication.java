@@ -9,9 +9,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 注意:SpringBoot中多个webMvcConfigurer的Bean可以共存
+ * 并且Springboot会依次调用相关的方法
+ */
 @SpringBootApplication
 @RestController
-@EnableHttpInfoLoggerWithSPI
+@EnableHttpInfoLogger
 public class BootstrapApplication {
 
     @GetMapping("/health")
