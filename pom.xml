@@ -20,6 +20,7 @@
         <module>distribute-session</module>
         <module>custom-property-server</module>
         <module>config-client</module>
+        <module>sleuth-server</module>
     </modules>
 
     <properties>

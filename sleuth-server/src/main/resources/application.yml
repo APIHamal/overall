@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: sleuth-server
+server:
+  port: 7779
+---
+spring:
+  profiles: common
+  #配置config的自动发现服务相关
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      enabled: true
+      request-connect-timeout: 5
+      request-read-timeout: 10
+      fail-fast: true
+      label: master
+      profile: default
+  #配置链路追踪相关服务
+  sleuth:
+    enabled: true #开启sleuth进行链路追踪
+    sampler:
+      probability: 1 #配置sleuth的采样率(默认是0.1即只有10%的请求会被采样)
+  zipkin: #整合zipkin的服务(zipkin相当于收集span的相关数据由span生成trace信息)
+    base-url: http://192.168.168.168:9411 #zipkin服务的地址
+    sender:
+      type: web #表示以http报文的形式发送到zipkin服务器
+#配置Eureka服务器相关
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7770/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 8
+    lease-expiration-duration-in-seconds: 20
+#配置feign的相关内容
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+        connectTimeout: 5
+        readTimeout: 5
+  hystrix: #开启hystrix的熔断支持(否则feign调用失败不会进入降级处理代码)
+    enabled: true
+#配置feign的日志输出级别
+logging:
+  level:
+    com.lizhengpeng.overall.sleuth.feign: debug
+#配置ribbon的饥饿加载模式
+ribbon:
+  eager-load:
+    enabled: true
+    clients: sleuth-server
