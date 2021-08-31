@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class HttpInfoAutoConfig {
 
     @Bean
-    @ConditionalOnMissingBean(WebMvcConfigurer.class)
     public WebMvcConfigurer webMvcConfigurer(){
         WebMvcConfigurer webMvcConfigurer = new WebMvcConfigurer(){
             @Override

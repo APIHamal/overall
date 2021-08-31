@@ -1,1 +1,1 @@
-com.lizhengpeng.overall.boot.autoconfig.EnableHttpInfoLogger=com.lizhengpeng.overall.boot.autoconfig.HttpInfoAutoConfig
+#com.lizhengpeng.overall.boot.autoconfig.EnableHttpInfoLogger=com.lizhengpeng.overall.boot.autoconfig.HttpInfoAutoConfig

@@ -3,3 +3,15 @@ server:
 spring:
   application:
     name: spring-boot
+  #整合redis的相关配置(仅redis的实例不使用sentinel的情况)
+  redis:
+    host: 192.168.168.168 #redis服务器的地址
+    port: 6379 #redis的监听端口
+    database: 0 #redis选择的数据库(默认16个数据库索引为0-15数据库的数量可以配置)
+    timeout: 1000ms #连接redis服务器的超时时间(指socket的超时时间)
+    jedis: ###注意:springboot2.x之后版本默认使用lettuce作为客户端因此使用jedis需要先排除lettuce的依赖
+      pool:
+        max-active: 32 #配置jedis缓存池中最大的连接活跃数量
+        max-wait: 2000ms #连接池中无可用的redis连接时线程最大的等待时间
+        min-idle: 16 #连接池中最小的空闲连接的数量
+        max-idle: 16 #连接池中最大的空闲连接的数量
